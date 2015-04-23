@@ -1,0 +1,80 @@
+{
+  "name": "formidable",
+  "description": "A node.js module for parsing form data, especially file uploads.",
+  "homepage": "https://github.com/felixge/node-formidable",
+  "version": "1.0.14",
+  "devDependencies": {
+    "gently": "0.8.0",
+    "findit": "0.1.1",
+    "hashish": "0.0.4",
+    "urun": "~0.0.6",
+    "utest": "0.0.3",
+    "request": "~2.11.4"
+  },
+  "main": "./lib/index",
+  "scripts": {
+    "test": "node test/run.js",
+    "clean": "rm test/tmp/*"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/felixge/node-formidable.git"
+  },
+  "bugs": {
+    "url": "http://github.com/felixge/node-formidable/issues"
+  },
+  "optionalDependencies": {},
+  "_id": "formidable@1.0.14",
+  "dist": {
+    "shasum": "2b3f4c411cbb5fdd695c44843e2a23514a43231a",
+    "tarball": "http://registry.npmjs.org/formidable/-/formidable-1.0.14.tgz"
+  },
+  "_from": ".",
+  "_npmVersion": "1.2.18",
+  "_npmUser": {
+    "name": "tim-smart",
+    "email": "tim@fostle.com"
+  },
+  "maintainers": [
+    {
+      "name": "felixge",
+      "email": "felix@debuggable.com"
+    },
+    {
+      "name": "svnlto",
+      "email": "me@svenlito.com"
+    },
+    {
+      "name": "superjoe",
+      "email": "superjoe30@gmail.com"
+    },
+    {
+      "name": "tim-smart",
+      "email": "tim@fostle.com"
+    }
+  ],
+  "jspm": {},
+  "format": "cjs",
+  "ignore": [
+    "node_modules"
+  ],
+  "registry": "npm",
+  "dependencies": {
+    "assert": "github:jspm/nodelibs-assert@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "string_decoder": "github:jspm/nodelibs-string_decoder@^0.1.0",
+    "stream": "github:jspm/nodelibs-stream@^0.1.0",
+    "os": "github:jspm/nodelibs-os@^0.1.0",
+    "querystring": "github:jspm/nodelibs-querystring@^0.1.0",
+    "http": "github:jspm/nodelibs-http@^1.7.0"
+  }
+}

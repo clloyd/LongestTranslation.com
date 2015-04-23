@@ -1,0 +1,6 @@
+.DS_Store
+
+# Thumbnails
+._*
+
+node_modules

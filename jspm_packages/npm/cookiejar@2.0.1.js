@@ -1,0 +1,1 @@
+module.exports = require("npm:cookiejar@2.0.1/cookiejar");
