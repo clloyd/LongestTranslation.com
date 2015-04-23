@@ -24,6 +24,7 @@
     }
   },
   "dependencies": {
+    "catbox-redis": "^1.0.4",
     "handlebars": "^3.0.2",
     "hapi": "^8.4.0",
     "superagent": "^1.2.0"
