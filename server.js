@@ -1,4 +1,4 @@
-var yandexApiKey = "trnsl.1.1.20150423T183643Z.b6aedfea8975c09e.bbf8bad88643e7b055d6606c7f46975801ff1ccd";
+var yandexApiKey = process.env.YANDEX_KEY;
 
 var Hapi = require('hapi');
 var SuperAgent = require('superagent');
