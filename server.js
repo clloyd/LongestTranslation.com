@@ -15,6 +15,13 @@ if (process.env.REDISTOGO_URL) {
       password: rtg.auth.split(":")[1]
     }
   };
+} else {
+  options = {
+    cache: {
+      engine: require('catbox-redis'),
+      host: "127.0.0.1"
+    }
+  };
 }
 
 var server = new Hapi.Server(options);
@@ -29,6 +36,7 @@ server.views({
 
 var getTranslation = function(translate, next) {
 
+  console.log(translate)
   SuperAgent.get('https://translate.yandex.net/api/v1.5/tr.json/translate')
   .query({'key': yandexApiKey})
   .query({'lang': 'en-' + translate.code})
@@ -38,8 +46,6 @@ var getTranslation = function(translate, next) {
       next(err);
       return;
     }
-
-
     next(false, res.body);
 
   });
@@ -47,15 +53,19 @@ var getTranslation = function(translate, next) {
 };
 
 server.method({
-  cache: {
-    expiresIn: 6000000,
-    staleIn: 5000000
+  options: {
+    cache: {
+      expiresIn: 6000000,
+      staleIn: 5000000,
+      staleTimeout: 20
+    },
+    generateKey: function(translate) {
+      return translate.code + "-" + translate.text;
+    }
   },
   name: 'getTranslation',
   method: getTranslation,
-  generateKey: function(translate) {
-    return translate.code + "-" + translate.text;
-  }
+
 });
 
 var translateHandler = function(request, reply){
@@ -65,6 +75,7 @@ var translateHandler = function(request, reply){
   server.methods.getTranslation({code: languageCode, text: text}, function(err, translatedResp){
     if (err) {
       reply('Error Getting Translation').code(500);
+      return;
     }
 
     reply(translatedResp);
