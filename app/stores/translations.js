@@ -22,8 +22,6 @@ export default Reflux.createStore({
       return;
     }
 
-    console.log(enabledLanguages);
-
     Object.keys(this.enabledLanguages).forEach(key => {
       this.fetchTranslation({name: this.enabledLanguages[key], code: key}, textToTranslate);
     });
