@@ -74,11 +74,13 @@ body {
 
 .form__input {
   height: 50px;
+	width: 100%;
+	
   padding: 10px;
+	border: 1px solid #D8D8D8;
+	border-radius: 3px;
+
   font-size: 20px;
-  width: 100%;
-  border: 1px solid #D8D8D8;
-  border-radius: 3px;
 }
 
 .form__input:focus {
@@ -89,12 +91,14 @@ body {
   position: absolute;
   top: 6px;
   right: 7px;
-  font-size: 16px;
-  padding: 8px;
-  background-color: white;
-  color: green;
-  border: 1px solid green;
 
-  border-radius: 3px;
+  padding: 8px;
+	border: 1px solid green;
+	border-radius: 3px;
+
+  background-color: white;
+	font-size: 16px;
+
+	color: green;
 
 }
