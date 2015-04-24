@@ -46,10 +46,15 @@ table {
 	border-spacing: 0;
 }
 
+* {
+	box-sizing: border-box;
+}
+
 body {
   background-color: #f3f3f3;
 
   font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
 }
 
 .main {
@@ -72,6 +77,12 @@ body {
   padding: 10px;
   font-size: 20px;
   width: 100%;
+  border: 1px solid #D8D8D8;
+  border-radius: 3px;
+}
+
+.form__input:focus {
+  outline: 1px solid #A9A9A9;
 }
 
 .form__submit {

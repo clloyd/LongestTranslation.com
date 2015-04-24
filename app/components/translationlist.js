@@ -2,6 +2,8 @@ import React from 'react';
 import Translation from 'app/components/translation';
 import TranslationsStore from 'app/stores/translations';
 
+import './translationlist.css!';
+
 var compareLength = function compare(a,b) {
   if (a.value.length < b.value.length)
      return 1;
@@ -29,10 +31,13 @@ export default class TranslationList extends React.Component {
       return null;
     }
 
+    var sortedTranslations = this.state.translations.sort(compareLength);
+
     return (
-      <ul>
-        {this.state.translations.sort(compareLength).map(translation => {
-          return (<li key={translation.name}>{translation.name} - {translation.value}</li>);
+      <ul className="translationlist">
+        {sortedTranslations.map(translation => {
+
+          return (<Translation translation={translation} largest={sortedTranslations[0].value.length} />);
         })}
       </ul>
     );
