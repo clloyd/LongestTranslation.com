@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "iojs": "1.8.x"
+  },
   "keywords": [],
   "author": "Christopher Lloyd",
   "license": "ISC",
