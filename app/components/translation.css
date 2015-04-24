@@ -19,6 +19,7 @@
 }
 
 .translation__value {
+  position: relative;
   padding: 5px;
 }
 
