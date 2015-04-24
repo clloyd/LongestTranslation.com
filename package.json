@@ -12,6 +12,7 @@
   "jspm": {
     "directories": {},
     "dependencies": {
+      "css": "github:systemjs/plugin-css@^0.1.10",
       "json": "github:systemjs/plugin-json@^0.1.0",
       "react": "npm:react@^0.13.2",
       "reflux": "npm:reflux@^0.2.7",

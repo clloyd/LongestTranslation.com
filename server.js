@@ -36,7 +36,6 @@ server.views({
 
 var getTranslation = function(translate, next) {
 
-  console.log(translate)
   SuperAgent.get('https://translate.yandex.net/api/v1.5/tr.json/translate')
   .query({'key': yandexApiKey})
   .query({'lang': 'en-' + translate.code})

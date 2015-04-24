@@ -360,6 +360,7 @@
 
 (['app/main'], function(System) {
 
+
 System.register("npm:babel-runtime@5.1.11/helpers/inherits", [], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
@@ -379,6 +380,74 @@ System.register("npm:babel-runtime@5.1.11/helpers/inherits", [], true, function(
       subClass.__proto__ = superClass;
   };
   exports.__esModule = true;
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:core-js@0.8.4/library/modules/$.fw", [], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = function($) {
+    $.FW = false;
+    $.path = $.core;
+    return $;
+  };
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:core-js@0.8.4/library/modules/$.def", ["npm:core-js@0.8.4/library/modules/$"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  var $ = require("npm:core-js@0.8.4/library/modules/$"),
+      global = $.g,
+      core = $.core,
+      isFunction = $.isFunction;
+  function ctx(fn, that) {
+    return function() {
+      return fn.apply(that, arguments);
+    };
+  }
+  $def.F = 1;
+  $def.G = 2;
+  $def.S = 4;
+  $def.P = 8;
+  $def.B = 16;
+  $def.W = 32;
+  function $def(type, name, source) {
+    var key,
+        own,
+        out,
+        exp,
+        isGlobal = type & $def.G,
+        target = isGlobal ? global : type & $def.S ? global[name] : (global[name] || {}).prototype,
+        exports = isGlobal ? core : core[name] || (core[name] = {});
+    if (isGlobal)
+      source = name;
+    for (key in source) {
+      own = !(type & $def.F) && target && key in target;
+      if (own && key in exports)
+        continue;
+      out = own ? target[key] : source[key];
+      if (isGlobal && !isFunction(target[key]))
+        exp = source[key];
+      else if (type & $def.B && own)
+        exp = ctx(out, global);
+      else if (type & $def.W && target[key] == out)
+        !function(C) {
+          exp = function(param) {
+            return this instanceof C ? new C(param) : C(param);
+          };
+          exp.prototype = C.prototype;
+        }(out);
+      else
+        exp = type & $def.P && isFunction(out) ? ctx(Function.call, out) : out;
+      $.hide(exports, key, exp);
+    }
+  }
+  module.exports = $def;
   global.define = __define;
   return module.exports;
 });
@@ -3895,74 +3964,6 @@ System.register("npm:react@0.13.2/lib/onlyChild", ["npm:react@0.13.2/lib/ReactEl
   return module.exports;
 });
 
-System.register("npm:core-js@0.8.4/library/modules/$.fw", [], true, function(require, exports, module) {
-  var global = System.global,
-      __define = global.define;
-  global.define = undefined;
-  module.exports = function($) {
-    $.FW = false;
-    $.path = $.core;
-    return $;
-  };
-  global.define = __define;
-  return module.exports;
-});
-
-System.register("npm:core-js@0.8.4/library/modules/$.def", ["npm:core-js@0.8.4/library/modules/$"], true, function(require, exports, module) {
-  var global = System.global,
-      __define = global.define;
-  global.define = undefined;
-  var $ = require("npm:core-js@0.8.4/library/modules/$"),
-      global = $.g,
-      core = $.core,
-      isFunction = $.isFunction;
-  function ctx(fn, that) {
-    return function() {
-      return fn.apply(that, arguments);
-    };
-  }
-  $def.F = 1;
-  $def.G = 2;
-  $def.S = 4;
-  $def.P = 8;
-  $def.B = 16;
-  $def.W = 32;
-  function $def(type, name, source) {
-    var key,
-        own,
-        out,
-        exp,
-        isGlobal = type & $def.G,
-        target = isGlobal ? global : type & $def.S ? global[name] : (global[name] || {}).prototype,
-        exports = isGlobal ? core : core[name] || (core[name] = {});
-    if (isGlobal)
-      source = name;
-    for (key in source) {
-      own = !(type & $def.F) && target && key in target;
-      if (own && key in exports)
-        continue;
-      out = own ? target[key] : source[key];
-      if (isGlobal && !isFunction(target[key]))
-        exp = source[key];
-      else if (type & $def.B && own)
-        exp = ctx(out, global);
-      else if (type & $def.W && target[key] == out)
-        !function(C) {
-          exp = function(param) {
-            return this instanceof C ? new C(param) : C(param);
-          };
-          exp.prototype = C.prototype;
-        }(out);
-      else
-        exp = type & $def.P && isFunction(out) ? ctx(Function.call, out) : out;
-      $.hide(exports, key, exp);
-    }
-  }
-  module.exports = $def;
-  global.define = __define;
-  return module.exports;
-});
-
 System.register("npm:core-js@0.8.4/library/fn/object/keys", ["npm:core-js@0.8.4/library/modules/es6.object.statics-accept-primitives", "npm:core-js@0.8.4/library/modules/$"], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
@@ -4874,6 +4875,113 @@ System.register("countries.json!github:systemjs/plugin-json@0.1.0", [], true, fu
     "vi": "Vietnamese",
     "zh": "Chinese"
   };
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:core-js@0.8.4/library/modules/$", ["npm:core-js@0.8.4/library/modules/$.fw"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  'use strict';
+  var global = typeof self != 'undefined' ? self : Function('return this')(),
+      core = {},
+      defineProperty = Object.defineProperty,
+      hasOwnProperty = {}.hasOwnProperty,
+      ceil = Math.ceil,
+      floor = Math.floor,
+      max = Math.max,
+      min = Math.min;
+  var DESC = !!function() {
+    try {
+      return defineProperty({}, 'a', {get: function() {
+          return 2;
+        }}).a == 2;
+    } catch (e) {}
+  }();
+  var hide = createDefiner(1);
+  function toInteger(it) {
+    return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+  }
+  function desc(bitmap, value) {
+    return {
+      enumerable: !(bitmap & 1),
+      configurable: !(bitmap & 2),
+      writable: !(bitmap & 4),
+      value: value
+    };
+  }
+  function simpleSet(object, key, value) {
+    object[key] = value;
+    return object;
+  }
+  function createDefiner(bitmap) {
+    return DESC ? function(object, key, value) {
+      return $.setDesc(object, key, desc(bitmap, value));
+    } : simpleSet;
+  }
+  function isObject(it) {
+    return it !== null && (typeof it == 'object' || typeof it == 'function');
+  }
+  function isFunction(it) {
+    return typeof it == 'function';
+  }
+  function assertDefined(it) {
+    if (it == undefined)
+      throw TypeError("Can't call method on  " + it);
+    return it;
+  }
+  var $ = module.exports = require("npm:core-js@0.8.4/library/modules/$.fw")({
+    g: global,
+    core: core,
+    html: global.document && document.documentElement,
+    isObject: isObject,
+    isFunction: isFunction,
+    it: function(it) {
+      return it;
+    },
+    that: function() {
+      return this;
+    },
+    toInteger: toInteger,
+    toLength: function(it) {
+      return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0;
+    },
+    toIndex: function(index, length) {
+      index = toInteger(index);
+      return index < 0 ? max(index + length, 0) : min(index, length);
+    },
+    has: function(it, key) {
+      return hasOwnProperty.call(it, key);
+    },
+    create: Object.create,
+    getProto: Object.getPrototypeOf,
+    DESC: DESC,
+    desc: desc,
+    getDesc: Object.getOwnPropertyDescriptor,
+    setDesc: defineProperty,
+    getKeys: Object.keys,
+    getNames: Object.getOwnPropertyNames,
+    getSymbols: Object.getOwnPropertySymbols,
+    assertDefined: assertDefined,
+    ES5Object: Object,
+    toObject: function(it) {
+      return $.ES5Object(assertDefined(it));
+    },
+    hide: hide,
+    def: createDefiner(0),
+    set: global.Symbol ? simpleSet : hide,
+    mix: function(target, src) {
+      for (var key in src)
+        hide(target, key, src[key]);
+      return target;
+    },
+    each: [].forEach
+  });
+  if (typeof __e != 'undefined')
+    __e = core;
+  if (typeof __g != 'undefined')
+    __g = global;
   global.define = __define;
   return module.exports;
 });
@@ -7419,113 +7527,6 @@ System.register("npm:react@0.13.2/lib/ReactServerRendering", ["npm:react@0.13.2/
   return module.exports;
 });
 
-System.register("npm:core-js@0.8.4/library/modules/$", ["npm:core-js@0.8.4/library/modules/$.fw"], true, function(require, exports, module) {
-  var global = System.global,
-      __define = global.define;
-  global.define = undefined;
-  'use strict';
-  var global = typeof self != 'undefined' ? self : Function('return this')(),
-      core = {},
-      defineProperty = Object.defineProperty,
-      hasOwnProperty = {}.hasOwnProperty,
-      ceil = Math.ceil,
-      floor = Math.floor,
-      max = Math.max,
-      min = Math.min;
-  var DESC = !!function() {
-    try {
-      return defineProperty({}, 'a', {get: function() {
-          return 2;
-        }}).a == 2;
-    } catch (e) {}
-  }();
-  var hide = createDefiner(1);
-  function toInteger(it) {
-    return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-  }
-  function desc(bitmap, value) {
-    return {
-      enumerable: !(bitmap & 1),
-      configurable: !(bitmap & 2),
-      writable: !(bitmap & 4),
-      value: value
-    };
-  }
-  function simpleSet(object, key, value) {
-    object[key] = value;
-    return object;
-  }
-  function createDefiner(bitmap) {
-    return DESC ? function(object, key, value) {
-      return $.setDesc(object, key, desc(bitmap, value));
-    } : simpleSet;
-  }
-  function isObject(it) {
-    return it !== null && (typeof it == 'object' || typeof it == 'function');
-  }
-  function isFunction(it) {
-    return typeof it == 'function';
-  }
-  function assertDefined(it) {
-    if (it == undefined)
-      throw TypeError("Can't call method on  " + it);
-    return it;
-  }
-  var $ = module.exports = require("npm:core-js@0.8.4/library/modules/$.fw")({
-    g: global,
-    core: core,
-    html: global.document && document.documentElement,
-    isObject: isObject,
-    isFunction: isFunction,
-    it: function(it) {
-      return it;
-    },
-    that: function() {
-      return this;
-    },
-    toInteger: toInteger,
-    toLength: function(it) {
-      return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0;
-    },
-    toIndex: function(index, length) {
-      index = toInteger(index);
-      return index < 0 ? max(index + length, 0) : min(index, length);
-    },
-    has: function(it, key) {
-      return hasOwnProperty.call(it, key);
-    },
-    create: Object.create,
-    getProto: Object.getPrototypeOf,
-    DESC: DESC,
-    desc: desc,
-    getDesc: Object.getOwnPropertyDescriptor,
-    setDesc: defineProperty,
-    getKeys: Object.keys,
-    getNames: Object.getOwnPropertyNames,
-    getSymbols: Object.getOwnPropertySymbols,
-    assertDefined: assertDefined,
-    ES5Object: Object,
-    toObject: function(it) {
-      return $.ES5Object(assertDefined(it));
-    },
-    hide: hide,
-    def: createDefiner(0),
-    set: global.Symbol ? simpleSet : hide,
-    mix: function(target, src) {
-      for (var key in src)
-        hide(target, key, src[key]);
-      return target;
-    },
-    each: [].forEach
-  });
-  if (typeof __e != 'undefined')
-    __e = core;
-  if (typeof __g != 'undefined')
-    __g = global;
-  global.define = __define;
-  return module.exports;
-});
-
 System.register("npm:babel-runtime@5.1.11/core-js/object/keys", ["npm:core-js@0.8.4/library/fn/object/keys"], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
@@ -7622,6 +7623,52 @@ System.register("npm:reduce-component@1.0.1", ["npm:reduce-component@1.0.1/index
       __define = global.define;
   global.define = undefined;
   module.exports = require("npm:reduce-component@1.0.1/index");
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:core-js@0.8.4/library/modules/es6.object.statics-accept-primitives", ["npm:core-js@0.8.4/library/modules/$", "npm:core-js@0.8.4/library/modules/$.def"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  var $ = require("npm:core-js@0.8.4/library/modules/$"),
+      $def = require("npm:core-js@0.8.4/library/modules/$.def"),
+      isObject = $.isObject,
+      toObject = $.toObject;
+  function wrapObjectMethod(METHOD, MODE) {
+    var fn = ($.core.Object || {})[METHOD] || Object[METHOD],
+        f = 0,
+        o = {};
+    o[METHOD] = MODE == 1 ? function(it) {
+      return isObject(it) ? fn(it) : it;
+    } : MODE == 2 ? function(it) {
+      return isObject(it) ? fn(it) : true;
+    } : MODE == 3 ? function(it) {
+      return isObject(it) ? fn(it) : false;
+    } : MODE == 4 ? function getOwnPropertyDescriptor(it, key) {
+      return fn(toObject(it), key);
+    } : MODE == 5 ? function getPrototypeOf(it) {
+      return fn(Object($.assertDefined(it)));
+    } : function(it) {
+      return fn(toObject(it));
+    };
+    try {
+      fn('z');
+    } catch (e) {
+      f = 1;
+    }
+    $def($def.S + $def.F * f, 'Object', o);
+  }
+  wrapObjectMethod('freeze', 1);
+  wrapObjectMethod('seal', 1);
+  wrapObjectMethod('preventExtensions', 1);
+  wrapObjectMethod('isFrozen', 2);
+  wrapObjectMethod('isSealed', 2);
+  wrapObjectMethod('isExtensible', 3);
+  wrapObjectMethod('getOwnPropertyDescriptor', 4);
+  wrapObjectMethod('getPrototypeOf', 5);
+  wrapObjectMethod('keys');
+  wrapObjectMethod('getOwnPropertyNames');
   global.define = __define;
   return module.exports;
 });
@@ -9323,52 +9370,6 @@ System.register("npm:react@0.13.2/lib/ReactDefaultPerf", ["npm:react@0.13.2/lib/
   return module.exports;
 });
 
-System.register("npm:core-js@0.8.4/library/modules/es6.object.statics-accept-primitives", ["npm:core-js@0.8.4/library/modules/$", "npm:core-js@0.8.4/library/modules/$.def"], true, function(require, exports, module) {
-  var global = System.global,
-      __define = global.define;
-  global.define = undefined;
-  var $ = require("npm:core-js@0.8.4/library/modules/$"),
-      $def = require("npm:core-js@0.8.4/library/modules/$.def"),
-      isObject = $.isObject,
-      toObject = $.toObject;
-  function wrapObjectMethod(METHOD, MODE) {
-    var fn = ($.core.Object || {})[METHOD] || Object[METHOD],
-        f = 0,
-        o = {};
-    o[METHOD] = MODE == 1 ? function(it) {
-      return isObject(it) ? fn(it) : it;
-    } : MODE == 2 ? function(it) {
-      return isObject(it) ? fn(it) : true;
-    } : MODE == 3 ? function(it) {
-      return isObject(it) ? fn(it) : false;
-    } : MODE == 4 ? function getOwnPropertyDescriptor(it, key) {
-      return fn(toObject(it), key);
-    } : MODE == 5 ? function getPrototypeOf(it) {
-      return fn(Object($.assertDefined(it)));
-    } : function(it) {
-      return fn(toObject(it));
-    };
-    try {
-      fn('z');
-    } catch (e) {
-      f = 1;
-    }
-    $def($def.S + $def.F * f, 'Object', o);
-  }
-  wrapObjectMethod('freeze', 1);
-  wrapObjectMethod('seal', 1);
-  wrapObjectMethod('preventExtensions', 1);
-  wrapObjectMethod('isFrozen', 2);
-  wrapObjectMethod('isSealed', 2);
-  wrapObjectMethod('isExtensible', 3);
-  wrapObjectMethod('getOwnPropertyDescriptor', 4);
-  wrapObjectMethod('getPrototypeOf', 5);
-  wrapObjectMethod('keys');
-  wrapObjectMethod('getOwnPropertyNames');
-  global.define = __define;
-  return module.exports;
-});
-
 System.register("npm:reflux@0.2.7/src/utils", ["npm:eventemitter3@0.1.6", "npm:native-promise-only@0.7.6-a"], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
@@ -9997,6 +9998,16 @@ System.register("npm:superagent@1.2.0/lib/client", ["npm:component-emitter@1.1.2
     return req;
   };
   module.exports = request;
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:core-js@0.8.4/library/fn/object/get-own-property-descriptor", ["npm:core-js@0.8.4/library/modules/es6.object.statics-accept-primitives", "npm:core-js@0.8.4/library/modules/$"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  require("npm:core-js@0.8.4/library/modules/es6.object.statics-accept-primitives");
+  module.exports = require("npm:core-js@0.8.4/library/modules/$").core.Object.getOwnPropertyDescriptor;
   global.define = __define;
   return module.exports;
 });
@@ -11293,16 +11304,6 @@ System.register("npm:react@0.13.2/lib/ReactReconcileTransaction", ["npm:react@0.
   return module.exports;
 });
 
-System.register("npm:core-js@0.8.4/library/fn/object/get-own-property-descriptor", ["npm:core-js@0.8.4/library/modules/es6.object.statics-accept-primitives", "npm:core-js@0.8.4/library/modules/$"], true, function(require, exports, module) {
-  var global = System.global,
-      __define = global.define;
-  global.define = undefined;
-  require("npm:core-js@0.8.4/library/modules/es6.object.statics-accept-primitives");
-  module.exports = require("npm:core-js@0.8.4/library/modules/$").core.Object.getOwnPropertyDescriptor;
-  global.define = __define;
-  return module.exports;
-});
-
 System.register("npm:reflux@0.2.7/src/ListenerMethods", ["npm:reflux@0.2.7/src/utils", "npm:reflux@0.2.7/src/joins"], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
@@ -11444,6 +11445,18 @@ System.register("npm:superagent@1.2.0", ["npm:superagent@1.2.0/lib/client"], tru
       __define = global.define;
   global.define = undefined;
   module.exports = require("npm:superagent@1.2.0/lib/client");
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:babel-runtime@5.1.11/core-js/object/get-own-property-descriptor", ["npm:core-js@0.8.4/library/fn/object/get-own-property-descriptor"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = {
+    "default": require("npm:core-js@0.8.4/library/fn/object/get-own-property-descriptor"),
+    __esModule: true
+  };
   global.define = __define;
   return module.exports;
 });
@@ -11876,18 +11889,6 @@ System.register("npm:react@0.13.2/lib/ReactDefaultInjection", ["npm:react@0.13.2
   return module.exports;
 });
 
-System.register("npm:babel-runtime@5.1.11/core-js/object/get-own-property-descriptor", ["npm:core-js@0.8.4/library/fn/object/get-own-property-descriptor"], true, function(require, exports, module) {
-  var global = System.global,
-      __define = global.define;
-  global.define = undefined;
-  module.exports = {
-    "default": require("npm:core-js@0.8.4/library/fn/object/get-own-property-descriptor"),
-    __esModule: true
-  };
-  global.define = __define;
-  return module.exports;
-});
-
 System.register("npm:reflux@0.2.7/src/index", ["npm:reflux@0.2.7/src/ActionMethods", "npm:reflux@0.2.7/src/ListenerMethods", "npm:reflux@0.2.7/src/PublisherMethods", "npm:reflux@0.2.7/src/StoreMethods", "npm:reflux@0.2.7/src/createAction", "npm:reflux@0.2.7/src/createStore", "npm:reflux@0.2.7/src/connect", "npm:reflux@0.2.7/src/connectFilter", "npm:reflux@0.2.7/src/ListenerMixin", "npm:reflux@0.2.7/src/listenTo", "npm:reflux@0.2.7/src/listenToMany", "npm:reflux@0.2.7/src/joins", "npm:reflux@0.2.7/src/utils", "npm:reflux@0.2.7/src/utils", "npm:reflux@0.2.7/src/utils", "npm:reflux@0.2.7/src/utils", "npm:reflux@0.2.7/src/utils", "npm:reflux@0.2.7/src/Keep"], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
@@ -11942,6 +11943,48 @@ System.register("npm:reflux@0.2.7/src/index", ["npm:reflux@0.2.7/src/ActionMetho
   if (!Function.prototype.bind) {
     console.error('Function.prototype.bind not available. ' + 'ES5 shim required. ' + 'https://github.com/spoike/refluxjs#es5');
   }
+  global.define = __define;
+  return module.exports;
+});
+
+System.register("npm:babel-runtime@5.1.11/helpers/get", ["npm:babel-runtime@5.1.11/core-js/object/get-own-property-descriptor"], true, function(require, exports, module) {
+  var global = System.global,
+      __define = global.define;
+  global.define = undefined;
+  "use strict";
+  var _Object$getOwnPropertyDescriptor = require("npm:babel-runtime@5.1.11/core-js/object/get-own-property-descriptor")["default"];
+  exports["default"] = function get(_x, _x2, _x3) {
+    var _again = true;
+    _function: while (_again) {
+      desc = parent = getter = undefined;
+      _again = false;
+      var object = _x,
+          property = _x2,
+          receiver = _x3;
+      var desc = _Object$getOwnPropertyDescriptor(object, property);
+      if (desc === undefined) {
+        var parent = Object.getPrototypeOf(object);
+        if (parent === null) {
+          return undefined;
+        } else {
+          _x = parent;
+          _x2 = property;
+          _x3 = receiver;
+          _again = true;
+          continue _function;
+        }
+      } else if ("value" in desc) {
+        return desc.value;
+      } else {
+        var getter = desc.get;
+        if (getter === undefined) {
+          return undefined;
+        }
+        return getter.call(receiver);
+      }
+    }
+  };
+  exports.__esModule = true;
   global.define = __define;
   return module.exports;
 });
@@ -12168,48 +12211,6 @@ System.register("npm:react@0.13.2/lib/ReactDOMIDOperations", ["npm:react@0.13.2/
     });
     module.exports = ReactDOMIDOperations;
   })(require("github:jspm/nodelibs-process@0.1.1"));
-  global.define = __define;
-  return module.exports;
-});
-
-System.register("npm:babel-runtime@5.1.11/helpers/get", ["npm:babel-runtime@5.1.11/core-js/object/get-own-property-descriptor"], true, function(require, exports, module) {
-  var global = System.global,
-      __define = global.define;
-  global.define = undefined;
-  "use strict";
-  var _Object$getOwnPropertyDescriptor = require("npm:babel-runtime@5.1.11/core-js/object/get-own-property-descriptor")["default"];
-  exports["default"] = function get(_x, _x2, _x3) {
-    var _again = true;
-    _function: while (_again) {
-      desc = parent = getter = undefined;
-      _again = false;
-      var object = _x,
-          property = _x2,
-          receiver = _x3;
-      var desc = _Object$getOwnPropertyDescriptor(object, property);
-      if (desc === undefined) {
-        var parent = Object.getPrototypeOf(object);
-        if (parent === null) {
-          return undefined;
-        } else {
-          _x = parent;
-          _x2 = property;
-          _x3 = receiver;
-          _again = true;
-          continue _function;
-        }
-      } else if ("value" in desc) {
-        return desc.value;
-      } else {
-        var getter = desc.get;
-        if (getter === undefined) {
-          return undefined;
-        }
-        return getter.call(receiver);
-      }
-    }
-  };
-  exports.__esModule = true;
   global.define = __define;
   return module.exports;
 });
@@ -12704,8 +12705,6 @@ System.register('app/stores/translations', ['npm:babel-runtime@5.1.11/core-js/ob
             return;
           }
 
-          console.log(enabledLanguages);
-
           _Object$keys(this.enabledLanguages).forEach(function (key) {
             _this.fetchTranslation({ name: _this.enabledLanguages[key], code: key }, textToTranslate);
           });
@@ -12814,12 +12813,14 @@ System.register('app/components/translationlist', ['npm:babel-runtime@5.1.11/hel
     }
   };
 });
-System.register('app/main', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:babel-runtime@5.1.11/helpers/create-class', 'npm:babel-runtime@5.1.11/helpers/class-call-check', 'npm:react@0.13.2', 'app/components/translationlist', 'app/actions/fetchTranslations'], function (_export) {
-  var _inherits, _createClass, _classCallCheck, React, TranslationList, fetchTranslations, App;
+System.register('app/main', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:babel-runtime@5.1.11/helpers/get', 'npm:babel-runtime@5.1.11/helpers/create-class', 'npm:babel-runtime@5.1.11/helpers/class-call-check', 'npm:react@0.13.2', 'app/components/translationlist', 'app/actions/fetchTranslations', 'app/main.css!github:systemjs/plugin-css@0.1.10'], function (_export) {
+  var _inherits, _get, _createClass, _classCallCheck, React, TranslationList, fetchTranslations, App;
 
   return {
     setters: [function (_npmBabelRuntime5111HelpersInherits) {
       _inherits = _npmBabelRuntime5111HelpersInherits['default'];
+    }, function (_npmBabelRuntime5111HelpersGet) {
+      _get = _npmBabelRuntime5111HelpersGet['default'];
     }, function (_npmBabelRuntime5111HelpersCreateClass) {
       _createClass = _npmBabelRuntime5111HelpersCreateClass['default'];
     }, function (_npmBabelRuntime5111HelpersClassCallCheck) {
@@ -12830,25 +12831,27 @@ System.register('app/main', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:b
       TranslationList = _appComponentsTranslationlist['default'];
     }, function (_appActionsFetchTranslations) {
       fetchTranslations = _appActionsFetchTranslations['default'];
-    }],
+    }, function (_appMainCssGithubSystemjsPluginCss0110) {}],
     execute: function () {
       'use strict';
 
       App = (function (_React$Component) {
-        function App() {
+        function App(props) {
           _classCallCheck(this, App);
 
-          if (_React$Component != null) {
-            _React$Component.apply(this, arguments);
-          }
+          _get(Object.getPrototypeOf(App.prototype), 'constructor', this).call(this, props);
+
+          this.handleSubmit = this.handleSubmit.bind(this);
         }
 
         _inherits(App, _React$Component);
 
         _createClass(App, [{
-          key: 'handleChange',
-          value: function handleChange(event) {
-            fetchTranslations(event.target.value);
+          key: 'handleSubmit',
+          value: function handleSubmit(event) {
+            event.preventDefault();
+
+            fetchTranslations(this.refs.original.getDOMNode().value);
           }
         }, {
           key: 'render',
@@ -12858,10 +12861,15 @@ System.register('app/main', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:b
               { className: 'main' },
               React.createElement(
                 'h1',
-                null,
+                { className: 'main__title' },
                 'Longest Translation'
               ),
-              React.createElement('input', { type: 'text', onChange: this.handleChange }),
+              React.createElement(
+                'form',
+                { className: 'form', onSubmit: this.handleSubmit },
+                React.createElement('input', { type: 'text', ref: 'original', className: 'form__input', onChange: this.handleChange }),
+                React.createElement('input', { type: 'submit', className: 'form__submit' })
+              ),
               React.createElement(TranslationList, null)
             );
           }
@@ -12874,4 +12882,7 @@ System.register('app/main', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:b
     }
   };
 });
+System.register('app/main.css!github:systemjs/plugin-css@0.1.10', [], false, function() {});
+(function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
+("a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1;background-color:#f3f3f3;font-family:'Open Sans',sans-serif}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}.main{max-width:1000px;margin:0 auto;background-color:#FFF;padding:20px}.main__title{margin-bottom:10px}.form{position:relative}.form__input{height:50px;padding:10px;font-size:20px;width:100%}.form__submit{position:absolute;top:6px;right:7px;font-size:16px;padding:8px;background-color:#fff;color:green;border:1px solid green;border-radius:3px}");
 });
