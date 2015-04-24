@@ -1,0 +1,35 @@
+.translation {
+  display: inline-block;
+
+  position: relative;
+  width: calc(100% - 150px);
+
+}
+
+.translation__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(64, 179, 64, 0.31);
+}
+
+.translationlist__item:nth-child(odd) .translation__bar {
+  background-color: rgba(64, 179, 64, 0.4);
+}
+
+.translation__value {
+  padding: 5px;
+}
+
+.language {
+  display: inline-block;
+
+  width: 150px;
+  padding: 5px;
+
+}
+
+.translationlist__item:nth-child(odd) .language{
+  background-color: #F3F3F3;
+}

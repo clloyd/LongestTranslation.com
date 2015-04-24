@@ -361,6 +361,8 @@
 (['app/main'], function(System) {
 
 
+
+
 System.register("npm:babel-runtime@5.1.11/helpers/inherits", [], true, function(require, exports, module) {
   var global = System.global,
       __define = global.define;
@@ -12607,7 +12609,20 @@ System.register("npm:react@0.13.2", ["npm:react@0.13.2/react"], true, function(r
   return module.exports;
 });
 
-System.register('app/components/translation', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:babel-runtime@5.1.11/helpers/create-class', 'npm:babel-runtime@5.1.11/helpers/class-call-check', 'npm:react@0.13.2'], function (_export) {
+System.register('app/actions/fetchTranslations', ['npm:reflux@0.2.7'], function (_export) {
+  var Reflux;
+  return {
+    setters: [function (_npmReflux027) {
+      Reflux = _npmReflux027['default'];
+    }],
+    execute: function () {
+      'use strict';
+
+      _export('default', Reflux.createAction());
+    }
+  };
+});
+System.register('app/components/translation', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:babel-runtime@5.1.11/helpers/create-class', 'npm:babel-runtime@5.1.11/helpers/class-call-check', 'npm:react@0.13.2', 'app/components/translation.css!github:systemjs/plugin-css@0.1.10'], function (_export) {
   var _inherits, _createClass, _classCallCheck, React, Translation;
 
   return {
@@ -12619,7 +12634,7 @@ System.register('app/components/translation', ['npm:babel-runtime@5.1.11/helpers
       _classCallCheck = _npmBabelRuntime5111HelpersClassCallCheck['default'];
     }, function (_npmReact0132) {
       React = _npmReact0132['default'];
-    }],
+    }, function (_appComponentsTranslationCssGithubSystemjsPluginCss0110) {}],
     execute: function () {
       'use strict';
 
@@ -12637,12 +12652,24 @@ System.register('app/components/translation', ['npm:babel-runtime@5.1.11/helpers
         _createClass(Translation, [{
           key: 'render',
           value: function render() {
-
-            console.log(this.props.translation);
             return React.createElement(
-              'p',
-              null,
-              'this.props.translation.value'
+              'li',
+              { className: 'translationlist__item', key: this.props.translation.name },
+              React.createElement(
+                'div',
+                { className: 'language' },
+                this.props.translation.name
+              ),
+              React.createElement(
+                'div',
+                { className: 'translation' },
+                React.createElement('div', { className: 'translation__bar', style: { width: parseFloat(this.props.translation.value.length) / this.props.largest * 100 + '%' } }),
+                React.createElement(
+                  'div',
+                  { className: 'translation__value' },
+                  this.props.translation.value
+                )
+              )
             );
           }
         }]);
@@ -12651,19 +12678,6 @@ System.register('app/components/translation', ['npm:babel-runtime@5.1.11/helpers
       })(React.Component);
 
       _export('default', Translation);
-    }
-  };
-});
-System.register('app/actions/fetchTranslations', ['npm:reflux@0.2.7'], function (_export) {
-  var Reflux;
-  return {
-    setters: [function (_npmReflux027) {
-      Reflux = _npmReflux027['default'];
-    }],
-    execute: function () {
-      'use strict';
-
-      _export('default', Reflux.createAction());
     }
   };
 });
@@ -12735,7 +12749,7 @@ System.register('app/stores/translations', ['npm:babel-runtime@5.1.11/core-js/ob
     }
   };
 });
-System.register('app/components/translationlist', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:babel-runtime@5.1.11/helpers/get', 'npm:babel-runtime@5.1.11/helpers/create-class', 'npm:babel-runtime@5.1.11/helpers/class-call-check', 'npm:react@0.13.2', 'app/components/translation', 'app/stores/translations'], function (_export) {
+System.register('app/components/translationlist', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:babel-runtime@5.1.11/helpers/get', 'npm:babel-runtime@5.1.11/helpers/create-class', 'npm:babel-runtime@5.1.11/helpers/class-call-check', 'npm:react@0.13.2', 'app/components/translation', 'app/stores/translations', 'app/components/translationlist.css!github:systemjs/plugin-css@0.1.10'], function (_export) {
   var _inherits, _get, _createClass, _classCallCheck, React, Translation, TranslationsStore, compareLength, TranslationList;
 
   return {
@@ -12753,7 +12767,7 @@ System.register('app/components/translationlist', ['npm:babel-runtime@5.1.11/hel
       Translation = _appComponentsTranslation['default'];
     }, function (_appStoresTranslations) {
       TranslationsStore = _appStoresTranslations['default'];
-    }],
+    }, function (_appComponentsTranslationlistCssGithubSystemjsPluginCss0110) {}],
     execute: function () {
       'use strict';
 
@@ -12790,17 +12804,14 @@ System.register('app/components/translationlist', ['npm:babel-runtime@5.1.11/hel
               return null;
             }
 
+            var sortedTranslations = this.state.translations.sort(compareLength);
+
             return React.createElement(
               'ul',
-              null,
-              this.state.translations.sort(compareLength).map(function (translation) {
-                return React.createElement(
-                  'li',
-                  { key: translation.name },
-                  translation.name,
-                  ' - ',
-                  translation.value
-                );
+              { className: 'translationlist' },
+              sortedTranslations.map(function (translation) {
+
+                return React.createElement(Translation, { translation: translation, largest: sortedTranslations[0].value.length });
               })
             );
           }
@@ -12882,7 +12893,9 @@ System.register('app/main', ['npm:babel-runtime@5.1.11/helpers/inherits', 'npm:b
     }
   };
 });
+System.register('app/components/translation.css!github:systemjs/plugin-css@0.1.10', [], false, function() {});
+System.register('app/components/translationlist.css!github:systemjs/plugin-css@0.1.10', [], false, function() {});
 System.register('app/main.css!github:systemjs/plugin-css@0.1.10', [], false, function() {});
 (function(c){var d=document,a='appendChild',i='styleSheet',s=d.createElement('style');s.type='text/css';d.getElementsByTagName('head')[0][a](s);s[i]?s[i].cssText=c:s[a](d.createTextNode(c));})
-("a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1;background-color:#f3f3f3;font-family:'Open Sans',sans-serif}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}.main{max-width:1000px;margin:0 auto;background-color:#FFF;padding:20px}.main__title{margin-bottom:10px}.form{position:relative}.form__input{height:50px;padding:10px;font-size:20px;width:100%}.form__submit{position:absolute;top:6px;right:7px;font-size:16px;padding:8px;background-color:#fff;color:green;border:1px solid green;border-radius:3px}");
+(".language,.translation__value{padding:5px}.translationlist__item,ol,ul{list-style:none}.translation{display:inline-block;position:relative;width:calc(100% - 150px)}.translation__bar{position:absolute;top:0;left:0;height:100%;background-color:rgba(64,179,64,.31)}.translationlist__item:nth-child(odd) .translation__bar{background-color:rgba(64,179,64,.4)}.language{display:inline-block;width:150px}.translationlist__item:nth-child(odd) .language{background-color:#F3F3F3}.translationlist{margin-top:20px}a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1;background-color:#f3f3f3;font-family:'Open Sans',sans-serif;font-size:13px}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}*{box-sizing:border-box}.main{max-width:1000px;margin:0 auto;background-color:#FFF;padding:20px}.main__title{margin-bottom:10px}.form{position:relative}.form__input{height:50px;padding:10px;font-size:20px;width:100%;border:1px solid #D8D8D8;border-radius:3px}.form__input:focus{outline:#A9A9A9 solid 1px}.form__submit{position:absolute;top:6px;right:7px;font-size:16px;padding:8px;background-color:#fff;color:green;border:1px solid green;border-radius:3px}");
 });
