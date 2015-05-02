@@ -1,7 +1,7 @@
 import Reflux from 'reflux';
-import fetchTranslations from 'app/actions/fetchTranslations';
 import SuperAgent from 'superagent';
 
+import fetchTranslations from 'app/actions/fetchTranslations';
 import enabledLanguages from 'countries.json!';
 
 export default Reflux.createStore({

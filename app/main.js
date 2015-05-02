@@ -16,7 +16,7 @@ class App extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    fetchTranslations(this.refs.original.getDOMNode().value)
+    fetchTranslations(this.refs.original.getDOMNode().value);
   }
 
   render() {
@@ -29,7 +29,7 @@ class App extends React.Component {
         </form>
         <TranslationList />
       </div>
-    )
+    );
   }
 }
 

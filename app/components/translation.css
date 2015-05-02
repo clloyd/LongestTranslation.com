@@ -29,9 +29,8 @@
   display: inline-block;
 
   width: 150px;
-  
-  padding: 5px;
 
+  padding: 5px;
 }
 
 .translationlist__item:nth-child(odd) .language{

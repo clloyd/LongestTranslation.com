@@ -16,9 +16,9 @@ System.config({
 
 System.config({
   "map": {
-    "babel": "npm:babel-core@5.1.11",
-    "babel-runtime": "npm:babel-runtime@5.1.11",
-    "core-js": "npm:core-js@0.8.4",
+    "babel": "npm:babel-core@5.2.6",
+    "babel-runtime": "npm:babel-runtime@5.2.6",
+    "core-js": "npm:core-js@0.9.6",
     "css": "github:systemjs/plugin-css@0.1.10",
     "json": "github:systemjs/plugin-json@0.1.0",
     "react": "npm:react@0.13.2",
@@ -192,6 +192,9 @@ System.config({
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
     "npm:core-js@0.8.4": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
+    "npm:core-js@0.9.6": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:core-util-is@1.0.1": {
