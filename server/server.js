@@ -1,3 +1,7 @@
+if (!process.env.YANDEX_KEY) {
+  throw Error('No YANDEX_KEY provided');
+}
+
 var Hapi = require('hapi');
 var Path = require('path');
 

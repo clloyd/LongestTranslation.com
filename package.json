@@ -32,5 +32,9 @@
     "handlebars": "^3.0.2",
     "hapi": "^8.4.0",
     "superagent": "^1.2.0"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.4"
   }
 }
